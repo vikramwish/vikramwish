@@ -21,10 +21,9 @@ Final-year **Software Engineering (Honours)** student at the **University of Syd
 **AI coding tools:** Claude Code, Codex, Cursor, GitHub Copilot
 
 ### 🎲 Fun facts
-- 🌏 I've studied or worked in **Australia, the USA and the UAE**, and I'm a New Zealand citizen.
+- 🌏 I've studied or worked in **Australia, USA, India, Netherlands and the UAE**, and I'm a New Zealand citizen.
 - 🏫 I've been a student at **three universities**: Sydney, Cornell and UCLA.
 - 🔬 I contributed to a **peer-reviewed publication** on chem-resistive gas sensor arrays.
-- 📡 I built an ESP32 sensor platform with a Python web dashboard for real-time telemetry.
-- 👨‍🏫 I teach Python to a cohort of **1,300+ first-year engineers**.
+- 👨‍🏫 I taught Python to a cohort of **1,300+ first-year engineers**.
 
 📍 Sydney, Australia · [LinkedIn](https://www.linkedin.com/in/vikram-vish/)
