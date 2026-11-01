@@ -8,6 +8,25 @@
 
 I'm **Vikram** — a final-year **Software Engineering (Honours)** student at the **University of Sydney**, graduating in **2027**. I build reliable software, teach Python, and follow questions across disciplines and borders. I'm looking for a graduate software engineering role starting in February.
 
+### A winning branch
+
+<table>
+<tr>
+<td width="120" align="center">
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/copilot-icon-white.svg">
+  <img src="assets/copilot-icon-black.svg" alt="GitHub Copilot" width="80">
+</picture>
+</td>
+<td>
+<sub>HACKATHON WINNER · UNIVERSITY OF SYDNEY</sub>
+<h3>Flip Face Off</h3>
+<p>Winning project at the University of Sydney GitHub Copilot hackathon.</p>
+<p>A memory-card game built with React and TypeScript, with animated card flips and an experimental Supabase room lobby.</p>
+</td>
+</tr>
+</table>
+
 ### Every branch holds a chapter.
 
 <details>
