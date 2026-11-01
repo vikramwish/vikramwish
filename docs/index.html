@@ -1,81 +1,59 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#eef3f7">
-  <meta name="description" content="An interactive signal garden by Vikram. Explore software, teaching, research and a life across places.">
-  <title>Vikram — Signal garden</title>
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 50 50'%3E%3Crect width='50' height='50' rx='25' fill='%23eef3f7'/%3E%3Cpath d='M12 12L25 39L38 12M25 39V7' fill='none' stroke='%23184fc6' stroke-width='2'/%3E%3C/svg%3E">
-  <link rel="stylesheet" href="style.css">
-  <script type="module" src="app.mjs"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#080f1b">
+<meta name="description" content="Vikram's Tree of Paths. An interactive life story across Dubai, Sydney, UCLA, Cornell, software, research and the chapters still unwritten.">
+<title>Vikram · The Tree of Paths</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='20' fill='%23080f1b'/%3E%3Cpath d='M20 34V5M20 21L8 9M20 15L32 5M20 28L32 16M20 32L10 25' stroke='%23d4ad70' fill='none'/%3E%3C/svg%3E">
+<link rel="preload" as="image" href="tree-of-paths.png">
+<link rel="stylesheet" href="style.css">
+<script type="module" src="app.mjs"></script>
 </head>
 <body>
-  <a class="skip" href="#stories">Skip to my story</a>
-  <header>
-    <a class="signature" href="https://github.com/vikramwish" aria-label="Vikram on GitHub">vikram<span aria-hidden="true">✳</span></a>
-    <p>Software engineering & a little curiosity.<br>Sydney, Australia</p>
-    <a class="profile-link" href="https://github.com/vikramwish">Back to GitHub <span aria-hidden="true">↗</span></a>
-  </header>
-  <main>
-    <section class="intro" aria-labelledby="title">
-      <h1 id="title">Everything starts<br>with a little <em>curiosity.</em></h1>
-      <div class="intro-note"><p>A living sketch of the things I do.<br>Follow a thread. See where it grows.</p><span class="handwritten" aria-hidden="true">make yourself at home ↘</span></div>
-    </section>
-    <div class="exhibit">
-      <section class="garden" aria-label="Interactive signal garden">
-        <div class="drawing">
-          <svg id="art" viewBox="0 0 900 700" role="img" aria-labelledby="art-title art-desc"><title id="art-title">Signal garden</title><desc id="art-desc">Four flowers woven from fine colored threads share a common root. Explore the labeled branches to read Vikram's story.</desc><g id="threads"></g></svg>
-          <div class="branch-controls" role="group" aria-label="Explore a branch" hidden>
-            <button class="branch build" data-branch="build" aria-controls="build" aria-expanded="false"><span>Build</span><span aria-hidden="true">+</span></button>
-            <button class="branch teach" data-branch="teach" aria-controls="teach" aria-expanded="false"><span>Teach</span><span aria-hidden="true">+</span></button>
-            <button class="branch research" data-branch="research" aria-controls="research" aria-expanded="false"><span>Research</span><span aria-hidden="true">+</span></button>
-            <button class="branch wander" data-branch="wander" aria-controls="wander" aria-expanded="false"><span>Wander</span><span aria-hidden="true">+</span></button>
-          </div>
-          <noscript><img class="fallback" src="garden.svg" alt="Four intricate flowers drawn with blue, rust, green and violet threads."></noscript>
-        </div>
-        <div class="art-tools" hidden>
-          <p>Move to bend the threads.<br><span>Or tap a name to explore.</span></p>
-          <div><button id="regrow" type="button">Regrow <span aria-hidden="true">↻</span></button><button id="save" type="button">Keep this drawing <span aria-hidden="true">↓</span></button></div>
-        </div>
-        <p id="art-status" class="sr-only" role="status"></p>
-      </section>
-      <aside id="stories" tabindex="-1" aria-label="Vikram's story">
-        <article id="welcome" class="welcome">
-          <span class="specimen" aria-hidden="true">✳</span>
-          <h2>Hello, I'm Vikram.</h2>
-          <p>I build reliable software, teach Python, and follow interesting questions.</p>
-          <p>I'm a final-year Software Engineering (Honours) student at the University of Sydney, graduating in 2027 and looking for a graduate software engineering role starting in February.</p>
-          <p class="invitation">Every branch has a story.<br>Pick one to unfold it.</p>
-        </article>
-        <article id="build" class="story">
-          <span class="story-mark" aria-hidden="true">⌘</span><h2>Make it work.<br>Make it reliable.</h2>
-          <p>At <strong>Cogniti</strong>, I wrote a 70+ case Selenium end-to-end suite that helped cut release time in half: six weeks to three.</p>
-          <p>I also supported an AWS Lambda to Azure migration for a platform serving 70,000+ students across 22 institutions.</p>
-          <dl><dt>Summer 2025</dt><dd>Software Engineer · Cogniti</dd><dt>2022–2023</dt><dd>Software Engineering Intern · Zoho, Dubai</dd></dl>
-          <p class="small">Python, HTML, CSS, Bash, Selenium, Playwright, GitHub Actions, Docker, Azure, Cosmos DB, AWS Lambda, REST APIs and MCP.</p>
-          <a href="https://github.com/vikramwish?tab=repositories">Explore my repositories <span aria-hidden="true">↗</span></a>
-        </article>
-        <article id="teach" class="story">
-          <span class="story-mark" aria-hidden="true">✺</span><h2>Understanding grows<br>when you share it.</h2>
-          <p>I'm a <strong>Casual Academic & Head TA</strong> at the University of Sydney.</p>
-          <p>I teach Python labs and tutorials for ENGG1810, with a first-year cohort of <strong>1,300+ engineers</strong>.</p>
-          <dl><dt>2026–present</dt><dd>University of Sydney</dd></dl>
-        </article>
-        <article id="research" class="story">
-          <span class="story-mark" aria-hidden="true">❋</span><h2>Follow the question.</h2>
-          <p>From sensor arrays to degree structures, I've worked on questions at very different scales.</p>
-          <dl><dt>2025 · Cornell University</dt><dd>Research Assistant. Benchmarked degree structures across 15+ peer institutions.</dd><dt>2023–2024 · University of Sydney</dt><dd>Research Engineer. Contributor to a peer-reviewed publication on chem-resistive gas sensor arrays.</dd></dl>
-        </article>
-        <article id="wander" class="story">
-          <span class="story-mark" aria-hidden="true">✧</span><h2>A few places.<br>Many perspectives.</h2>
-          <p>I've studied or worked in Australia, the USA, India, the Netherlands and the UAE. I'm a New Zealand citizen, currently in Sydney.</p>
-          <dl><dt>University of Sydney</dt><dd>Bachelor of Software Engineering (Honours), graduating 2027.</dd><dt>Cornell · exchange, 2025</dt><dd>Software Systems Engineering (A+), Building LLM Applications (A+).</dd><dt>UCLA · summer exchange, 2024</dt><dd>A third university, another way of seeing things.</dd></dl>
-        </article>
-        <button id="reset" type="button" hidden>Return to the whole garden</button>
-      </aside>
-    </div>
-  </main>
-  <footer><p>Signal garden <span>— a small, growing self-portrait.</span></p><nav aria-label="Find Vikram"><a href="https://www.linkedin.com/in/vikram-vish/">Let's connect ↗</a><a href="https://github.com/vikramwish/vikramwish">View source ↗</a></nav></footer>
+<a class="skip-link" href="#chronicle">Read the chronicle</a>
+<header class="site-header"><a class="wordmark" href="https://github.com/vikramwish"><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M20 36V4M20 21L7 8M20 15L33 3M20 29L34 15M20 33L8 23"/></svg><span>Vikram</span></a><span class="header-caption">A life, still branching.</span><nav aria-label="Main"><a href="#chronicle">The chronicle</a><a href="https://github.com/vikramwish">GitHub <span aria-hidden="true">↗</span></a></nav></header>
+<main>
+<section class="world" aria-labelledby="title">
+  <div class="tree-scene">
+    <img class="tree-image" src="tree-of-paths.png" width="1536" height="1024" alt="An immense tree of luminous golden paths rises above distant walls. A lone traveler stands among its roots." fetchpriority="high">
+    <div class="scene-shade" aria-hidden="true"></div>
+    <svg class="paths" viewBox="0 0 1536 1024" aria-hidden="true"><path data-path="roots" pathLength="1" d="M 768 882 C 730 720, 680 500, 614.4 849.9200000000001"/><path data-path="dubai" pathLength="1" d="M 768 882 C 730 720, 680 500, 261.12 737.28"/><path data-path="signal" pathLength="1" d="M 768 882 C 730 720, 870 500, 1182.72 604.16"/><path data-path="ucla" pathLength="1" d="M 768 882 C 730 720, 680 500, 184.32 348.16"/><path data-path="cornell" pathLength="1" d="M 768 882 C 730 720, 870 500, 1044.48 225.28"/><path data-path="cogniti" pathLength="1" d="M 768 882 C 730 720, 680 500, 537.6 256"/><path data-path="teaching" pathLength="1" d="M 768 882 C 730 720, 870 500, 1290.24 378.88"/><path data-path="workshop" pathLength="1" d="M 768 882 C 730 720, 680 500, 491.52 522.24"/><path data-path="unwritten" pathLength="1" d="M 768 882 C 730 720, 870 500, 783.36 92.16"/></svg>
+    <div class="motes" aria-hidden="true"><i style="--i:0;--left:12%;--top:15%"></i><i style="--i:1;--left:43%;--top:32%"></i><i style="--i:2;--left:74%;--top:49%"></i><i style="--i:3;--left:27%;--top:66%"></i><i style="--i:4;--left:58%;--top:17%"></i><i style="--i:5;--left:89%;--top:34%"></i><i style="--i:6;--left:42%;--top:51%"></i><i style="--i:7;--left:73%;--top:68%"></i><i style="--i:8;--left:26%;--top:19%"></i><i style="--i:9;--left:57%;--top:36%"></i><i style="--i:10;--left:88%;--top:53%"></i><i style="--i:11;--left:41%;--top:70%"></i></div>
+    <div class="title-block"><p class="book-title">The Tree of Paths</p><h1 id="title">All the paths<br>that made me.</h1><p>Places. People. Questions.<br>And everything still to come.</p></div>
+    <nav class="memories" aria-label="Memories in the tree"><a class="memory" href="#chapter-roots" data-memory="roots" style="--x:40%;--y:83%" aria-label="1. Across borders, The roots, Along the way"><span class="memory-star" aria-hidden="true">◎</span><span class="memory-label"><strong>The roots</strong><span>Along the way</span></span></a>
+<a class="memory" href="#chapter-dubai" data-memory="dubai" style="--x:17%;--y:72%" aria-label="2. The first forge, Dubai, 2022–2023"><span class="memory-star" aria-hidden="true">◇</span><span class="memory-label"><strong>Dubai</strong><span>2022–2023</span></span></a>
+<a class="memory" href="#chapter-signal" data-memory="signal" style="--x:77%;--y:59%" aria-label="3. Reading the invisible, Sydney, 2023–2024"><span class="memory-star" aria-hidden="true">⌁</span><span class="memory-label"><strong>Sydney</strong><span>2023–2024</span></span></a>
+<a class="memory" href="#chapter-ucla" data-memory="ucla" style="--x:12%;--y:34%" aria-label="4. A wider horizon, Los Angeles, 2024"><span class="memory-star" aria-hidden="true">☼</span><span class="memory-label"><strong>Los Angeles</strong><span>2024</span></span></a>
+<a class="memory" href="#chapter-cornell" data-memory="cornell" style="--x:68%;--y:22%" aria-label="5. New ways of thinking, Ithaca, 2025"><span class="memory-star" aria-hidden="true">✧</span><span class="memory-label"><strong>Ithaca</strong><span>2025</span></span></a>
+<a class="memory" href="#chapter-cogniti" data-memory="cogniti" style="--x:35%;--y:25%" aria-label="6. Building at scale, Cogniti, Summer 2025"><span class="memory-star" aria-hidden="true">⌘</span><span class="memory-label"><strong>Cogniti</strong><span>Summer 2025</span></span></a>
+<a class="memory" href="#chapter-teaching" data-memory="teaching" style="--x:84%;--y:37%" aria-label="7. Passing it on, Sydney, 2026–present"><span class="memory-star" aria-hidden="true">✳</span><span class="memory-label"><strong>Sydney</strong><span>2026–present</span></span></a>
+<a class="memory" href="#chapter-workshop" data-memory="workshop" style="--x:32%;--y:51%" aria-label="8. The workshop, Things I build, Ongoing"><span class="memory-star" aria-hidden="true">⟡</span><span class="memory-label"><strong>Things I build</strong><span>Ongoing</span></span></a>
+<a class="memory" href="#chapter-unwritten" data-memory="unwritten" style="--x:51%;--y:9%" aria-label="9. The unwritten, Beyond the canopy, 2027 & onward"><span class="memory-star" aria-hidden="true">↟</span><span class="memory-label"><strong>Beyond the canopy</strong><span>2027 & onward</span></span></a></nav>
+    <div class="tree-caption"><span class="caption-line" aria-hidden="true"></span><p>Every light holds a chapter.<br><span>Choose one. Follow it home.</span></p></div>
+  </div>
+  <div class="world-toolbar"><a class="journey-start" href="#chapter-roots" data-memory="roots">Follow my path <span aria-hidden="true">↗</span></a><p id="progress" aria-live="polite">Nine chapters. One unfinished story.</p><div class="world-actions"><button id="motion" type="button" aria-pressed="false" hidden>Stillness</button><a href="tree-of-paths.png" download="vikram-tree-of-paths.png">Keep the artwork <span aria-hidden="true">↓</span></a></div></div>
+</section>
+<section class="chronicle" id="chronicle" aria-labelledby="chronicle-title">
+  <div class="chronicle-heading"><div><p class="book-title">The human behind the branches</p><h2 id="chronicle-title">A chronicle in progress.</h2></div><p>I’m Vikram. I build reliable software, <br>teach Python, and follow questions <br>across disciplines and borders.</p></div>
+  <div class="chapter-list"><details id="chapter-roots" class="chapter"><summary><span class="chapter-number">01</span><span>Across borders</span><span class="summary-time">Along the way</span><span class="summary-plus" aria-hidden="true">+</span></summary><div class="chapter-content"><p class="chapter-time">The roots <span> / </span> Along the way</p><h3>More than one place to call a chapter.</h3><p class="chapter-intro">Australia, the USA, India, the Netherlands and the UAE. Places I have studied or worked, all connected by one life.</p><div class="chapter-body"><p>I’m a New Zealand citizen, currently in Sydney. I’ve studied or worked in <strong>Australia, the USA, India, the Netherlands and the UAE</strong>.</p><p>Three universities are part of that story: the University of Sydney, Cornell and UCLA.</p></div><p class="chapter-note">The roots cross borders.</p></div></details>
+<details id="chapter-dubai" class="chapter"><summary><span class="chapter-number">02</span><span>The first forge</span><span class="summary-time">2022–2023</span><span class="summary-plus" aria-hidden="true">+</span></summary><div class="chapter-content"><p class="chapter-time">Dubai <span> / </span> 2022–2023</p><h3>An industry chapter begins.</h3><p class="chapter-intro">Software Engineering Intern at Zoho, Dubai.</p><div class="chapter-body"><p>In <strong>2022–2023</strong>, I worked as a <strong>Software Engineering Intern at Zoho in Dubai</strong>.</p><p>A chapter in software engineering, rooted in the UAE.</p></div><p class="chapter-note">One of the early branches.</p></div></details>
+<details id="chapter-signal" class="chapter"><summary><span class="chapter-number">03</span><span>Reading the invisible</span><span class="summary-time">2023–2024</span><span class="summary-plus" aria-hidden="true">+</span></summary><div class="chapter-content"><p class="chapter-time">Sydney <span> / </span> 2023–2024</p><h3>Signals become evidence.</h3><p class="chapter-intro">Research engineering at the University of Sydney, working with chem-resistive gas sensor arrays.</p><div class="chapter-body"><p>As a <strong>Research Engineer at the University of Sydney</strong> in 2023–2024, I contributed to a <strong>peer-reviewed publication on chem-resistive gas sensor arrays</strong>.</p><p>One branch of my work reaches beyond software and into physical sensing.</p></div><p class="chapter-note">The world leaves signals.</p></div></details>
+<details id="chapter-ucla" class="chapter"><summary><span class="chapter-number">04</span><span>A wider horizon</span><span class="summary-time">2024</span><span class="summary-plus" aria-hidden="true">+</span></summary><div class="chapter-content"><p class="chapter-time">Los Angeles <span> / </span> 2024</p><h3>Another campus. Another horizon.</h3><p class="chapter-intro">A summer exchange at UCLA.</p><div class="chapter-body"><p>In <strong>2024</strong>, I joined a <strong>summer exchange at UCLA</strong>.</p><p>Los Angeles became another place in a life that has crossed countries and campuses.</p></div><p class="chapter-note">The tree keeps reaching outward.</p></div></details>
+<details id="chapter-cornell" class="chapter"><summary><span class="chapter-number">05</span><span>New ways of thinking</span><span class="summary-time">2025</span><span class="summary-plus" aria-hidden="true">+</span></summary><div class="chapter-content"><p class="chapter-time">Ithaca <span> / </span> 2025</p><h3>Systems, language, and questions.</h3><p class="chapter-intro">Cornell exchange student and Research Assistant.</p><div class="chapter-body"><p>At <strong>Cornell University</strong> in 2025, I earned <strong>A+</strong> in both <strong>Software Systems Engineering</strong> and <strong>Building LLM Applications</strong>.</p><p>As a <strong>Research Assistant</strong>, I also benchmarked degree structures across <strong>15+ peer institutions</strong>.</p></div><p class="chapter-note">A branch for learning; another for asking.</p></div></details>
+<details id="chapter-cogniti" class="chapter"><summary><span class="chapter-number">06</span><span>Building at scale</span><span class="summary-time">Summer 2025</span><span class="summary-plus" aria-hidden="true">+</span></summary><div class="chapter-content"><p class="chapter-time">Cogniti <span> / </span> Summer 2025</p><h3>Small tests. A much larger world.</h3><p class="chapter-intro">Reliable software for a platform serving 70,000+ students across 22 institutions.</p><div class="chapter-body"><p>As a <strong>Software Engineer at Cogniti</strong>, I wrote a <strong>70+ case Selenium end-to-end suite</strong> that cut release time by <strong>50%</strong>, from six weeks to three.</p><p>I supported the <strong>AWS Lambda to Azure migration</strong> for a platform serving <strong>70,000+ students across 22 institutions</strong>.</p></div><p class="chapter-note">Reliability is something you build.</p></div></details>
+<details id="chapter-teaching" class="chapter"><summary><span class="chapter-number">07</span><span>Passing it on</span><span class="summary-time">2026–present</span><span class="summary-plus" aria-hidden="true">+</span></summary><div class="chapter-content"><p class="chapter-time">Sydney <span> / </span> 2026–present</p><h3>Knowledge takes root in others.</h3><p class="chapter-intro">Casual Academic & Head TA, University of Sydney.</p><div class="chapter-body"><p>I teach <strong>Python labs and tutorials for ENGG1810</strong> at the University of Sydney, with a first-year cohort of <strong>1,300+ engineers</strong>.</p><p>Since 2026, I’ve been a <strong>Casual Academic & Head TA</strong>.</p></div><p class="chapter-note">Some branches grow beyond you.</p></div></details>
+<details id="chapter-workshop" class="chapter"><summary><span class="chapter-number">08</span><span>The workshop</span><span class="summary-time">Ongoing</span><span class="summary-plus" aria-hidden="true">+</span></summary><div class="chapter-content"><p class="chapter-time">Things I build <span> / </span> Ongoing</p><h3>Ideas given a working form.</h3><p class="chapter-intro">A native file browser, financial operations software, and tools for UAE property analytics.</p><div class="chapter-body"><ul class="project-list"><li><a href="https://github.com/vikramwish/openfiles-mac">OpenFiles</a><p>A native macOS file browser with on-device hybrid semantic search, cloud storage, and a reviewed LLM file agent.</p></li><li><a href="https://github.com/vikramwish/meridian-fund-ops">Meridian</a><p>An AI-native system for private markets financial operations and period close governance.</p></li><li><a href="https://github.com/vikramwish/mcp-uae-property">UAE Property MCP</a><p>UAE real estate analytics, DLD fee calculations, and mortgage modeling.</p></li></ul></div><p class="chapter-note">Visit the repositories to see the work.</p></div></details>
+<details id="chapter-unwritten" class="chapter"><summary><span class="chapter-number">09</span><span>The unwritten</span><span class="summary-time">2027 & onward</span><span class="summary-plus" aria-hidden="true">+</span></summary><div class="chapter-content"><p class="chapter-time">Beyond the canopy <span> / </span> 2027 & onward</p><h3>There is more tree to grow.</h3><p class="chapter-intro">Software Engineering (Honours), University of Sydney. Graduating in 2027.</p><div class="chapter-body"><p>I’m a final-year <strong>Software Engineering (Honours)</strong> student at the <strong>University of Sydney</strong>, graduating in <strong>2027</strong>.</p><p>I’m looking for a <strong>graduate software engineering role starting in February</strong>.</p><p><a href="https://www.linkedin.com/in/vikram-vish/">Connect with me on LinkedIn</a></p></div><p class="chapter-note">The next chapter is still being written.</p></div></details></div>
+  <section class="tools" aria-labelledby="tools-title"><h3 id="tools-title">Tools carried along the way</h3><dl><dt>Programming</dt><dd>Python, HTML, CSS, Bash</dd><dt>Testing & delivery</dt><dd>Selenium, Playwright, GitHub Actions, Docker</dd><dt>Cloud & integration</dt><dd>Azure, Cosmos DB, AWS Lambda, REST APIs, MCP</dd><dt>AI coding tools</dt><dd>Claude Code, Codex, Cursor, GitHub Copilot</dd></dl></section>
+</section>
+</main>
+<dialog id="memory-dialog" aria-labelledby="memory-title">
+  <div class="dialog-top"><p id="memory-position"></p><button id="close-memory" type="button" aria-label="Close memory">×</button></div>
+  <div id="memory-content"></div>
+  <nav class="memory-pagination" aria-label="Journey"><button id="previous-memory" type="button">Previous</button><button id="next-memory" type="button">Next chapter <span aria-hidden="true">↗</span></button></nav>
+</dialog>
+<footer><p>A life is more than the sum of its branches.</p><div><a href="https://www.linkedin.com/in/vikram-vish/">Find me on LinkedIn ↗</a><a href="https://github.com/vikramwish/vikramwish">View source ↗</a></div><small>Original artwork inspired by the Tree of Life and the atmosphere of Attack on Titan.</small></footer>
 </body>
 </html>

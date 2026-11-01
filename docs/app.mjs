@@ -1,79 +1,94 @@
-import { branches, drawGarden, gardenSVG } from './art.mjs';
-const threads = document.querySelector('#threads');
-const drawing = document.querySelector('.drawing');
-const controls = [...document.querySelectorAll('[data-branch]')];
-const stories = [...document.querySelectorAll('.story')];
-const welcome = document.querySelector('#welcome');
-const reset = document.querySelector('#reset');
-const status = document.querySelector('#art-status');
+const dialog = document.querySelector('#memory-dialog');
+const content = document.querySelector('#memory-content');
+const memories = [...document.querySelectorAll('.memories [data-memory]')];
+const ids = memories.map(link => link.dataset.memory);
+const paths = [...document.querySelectorAll('[data-path]')];
+const previous = document.querySelector('#previous-memory');
+const next = document.querySelector('#next-memory');
+const motion = document.querySelector('#motion');
 const reduced = matchMedia('(prefers-reduced-motion: reduce)');
-let seed = 2027;
-let active = '';
-let frame = 0;
-let bend = { x: 0, y: 0 };
-let target = { x: 0, y: 0 };
-function render() { threads.innerHTML = drawGarden(seed, bend.x, bend.y, active); }
-function select(id, scroll = false) {
-  active = branches.some(branch => branch.id === id) ? id : '';
-  controls.forEach(button => button.setAttribute('aria-expanded', String(button.dataset.branch === active)));
-  stories.forEach(story => { story.hidden = story.id !== active; });
-  welcome.hidden = Boolean(active);
-  reset.hidden = !active;
-  render();
-  if (scroll && matchMedia('(max-width: 760px)').matches) {
-    document.querySelector('#stories').scrollIntoView({ behavior: reduced.matches ? 'instant' : 'smooth', block: 'start' });
+const visited = new Set();
+const aliases = { build: 'cogniti', teach: 'teaching', research: 'signal', wander: 'roots' };
+let active = -1;
+let returnFocus = null;
+let returnScroll = 0;
+let manualStillness = false;
+
+function applyMotion() {
+  const still = reduced.matches || manualStillness;
+  document.body.classList.toggle('still', still);
+  motion.setAttribute('aria-pressed', String(still));
+  motion.textContent = still ? 'Stillness on' : 'Stillness';
+  motion.disabled = reduced.matches;
+  motion.title = reduced.matches ? 'Your device prefers reduced motion.' : 'Pause or resume the drifting lights.';
+}
+
+function openMemory(id, updateURL = true) {
+  id = aliases[id] || id;
+  const index = ids.indexOf(id);
+  if (index < 0) return false;
+  if (!dialog.open) {
+    returnFocus = document.activeElement;
+    returnScroll = window.scrollY;
+    document.querySelector('.world').scrollIntoView({ behavior: 'instant', block: 'start' });
   }
+  active = index;
+  visited.add(id);
+  content.replaceChildren(document.querySelector(`#chapter-${id} .chapter-content`).cloneNode(true));
+  const heading = content.querySelector('h3');
+  heading.id = 'memory-title';
+  heading.tabIndex = -1;
+  document.querySelector('#memory-position').textContent = `Memory ${String(index + 1).padStart(2, '0')} / ${String(ids.length).padStart(2, '0')}`;
+  document.querySelector('#progress').textContent = visited.size === ids.length ? 'Every chapter visited. The story keeps growing.' : `${visited.size} of ${ids.length} chapters visited`;
+  memories.forEach(link => {
+    link.classList.toggle('visited', visited.has(link.dataset.memory));
+    if (link.dataset.memory === id) link.setAttribute('aria-current', 'true');
+    else link.removeAttribute('aria-current');
+  });
+  paths.forEach(path => path.classList.toggle('active', path.dataset.path === id));
+  previous.disabled = index === 0;
+  next.textContent = index === ids.length - 1 ? 'Return to the tree' : 'Next chapter ↗';
+  if (updateURL) history.replaceState(null, '', `#${id}`);
+  if (!dialog.open) dialog.showModal();
+  document.body.classList.add('memory-open');
+  dialog.scrollTop = 0;
+  heading.focus({ preventScroll: true });
+  return true;
 }
-function tick() {
-  bend.x += (target.x - bend.x) * 0.12;
-  bend.y += (target.y - bend.y) * 0.12;
-  render();
-  frame = Math.abs(target.x - bend.x) + Math.abs(target.y - bend.y) > 0.2 ? requestAnimationFrame(tick) : 0;
-}
-function move(x, y) {
-  if (reduced.matches) return;
-  target = { x, y };
-  if (!frame) frame = requestAnimationFrame(tick);
-}
-drawing.addEventListener('pointermove', event => {
-  // Touch remains normal page scrolling; named controls work with every input.
-  if (event.pointerType === 'touch') return;
-  const rect = drawing.getBoundingClientRect();
-  move(((event.clientX - rect.left) / rect.width - 0.5) * 100, ((event.clientY - rect.top) / rect.height - 0.5) * 55);
+
+function closeMemory() { dialog.close(); }
+
+document.querySelectorAll('[data-memory]').forEach(link => {
+  // Native anchor behavior remains available if the module cannot initialize.
+  link.addEventListener('click', event => {
+    event.preventDefault();
+    openMemory(link.dataset.memory);
+  });
 });
-drawing.addEventListener('pointerleave', () => move(0, 0));
-reduced.addEventListener('change', () => {
-  cancelAnimationFrame(frame);
-  frame = 0;
-  bend = target = { x: 0, y: 0 };
-  render();
+document.querySelector('#close-memory').addEventListener('click', closeMemory);
+dialog.addEventListener('click', event => {
+  if (event.target !== dialog) return;
+  const rect = dialog.getBoundingClientRect();
+  if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) closeMemory();
 });
-controls.forEach(button => button.addEventListener('click', () => {
-  const id = button.dataset.branch === active ? '' : button.dataset.branch;
-  select(id, Boolean(id));
-  history.replaceState(null, '', id ? `#${id}` : location.pathname + location.search);
-}));
-reset.addEventListener('click', () => {
-  const previous = active;
-  select('');
-  history.replaceState(null, '', location.pathname + location.search);
-  controls.find(button => button.dataset.branch === previous)?.focus();
+dialog.addEventListener('close', () => {
+  document.body.classList.remove('memory-open');
+  window.scrollTo({ top: returnScroll, behavior: 'instant' });
+  paths.forEach(path => path.classList.remove('active'));
+  memories.forEach(link => link.removeAttribute('aria-current'));
+  if (ids.includes(location.hash.slice(1)) || aliases[location.hash.slice(1)]) history.replaceState(null, '', location.pathname + location.search);
+  if (returnFocus instanceof HTMLElement && returnFocus !== document.body) returnFocus.focus({ preventScroll: true });
+  else memories[active]?.focus({ preventScroll: true });
 });
-window.addEventListener('hashchange', () => select(location.hash.slice(1)));
-document.querySelector('#regrow').addEventListener('click', () => {
-  seed = crypto.getRandomValues(new Uint32Array(1))[0];
-  render();
-  status.textContent = `A new garden has grown. Drawing ${seed}.`;
+previous.addEventListener('click', () => { if (active > 0) openMemory(ids[active - 1]); });
+next.addEventListener('click', () => { if (active < ids.length - 1) openMemory(ids[active + 1]); else closeMemory(); });
+motion.addEventListener('click', () => { manualStillness = !manualStillness; applyMotion(); });
+reduced.addEventListener('change', applyMotion);
+window.addEventListener('hashchange', () => {
+  if (!openMemory(location.hash.slice(1), false) && dialog.open) closeMemory();
 });
-document.querySelector('#save').addEventListener('click', () => {
-  const url = URL.createObjectURL(new Blob([gardenSVG(seed)], { type: 'image/svg+xml' }));
-  const link = document.createElement('a');
-  link.href = url;
-  link.download = `vikram-signal-garden-${seed}.svg`;
-  link.click();
-  setTimeout(() => URL.revokeObjectURL(url), 1000);
-  status.textContent = 'Your garden drawing is ready to save as an SVG.';
-});
-select(location.hash.slice(1));
-document.querySelector('.branch-controls').hidden = false;
-document.querySelector('.art-tools').hidden = false;
+// Standard anchor links still lead to the readable chronicle without JavaScript.
+memories.forEach(link => { link.href = `#${link.dataset.memory}`; });
+motion.hidden = false;
+applyMotion();
+openMemory(location.hash.slice(1), false);
