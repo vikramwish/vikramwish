@@ -1,6 +1,6 @@
-# Orbital Atlas
+# Profile viewers
 
-A static personal site with a three.js globe, an ordered Bayer / halftone post-process, selectable geographic locations, and an accessible profile index. The page contains only the atlas panel and entry tabs. The GitHub README contains one linked screenshot of that same panel, since GitHub does not run WebGL inside READMEs.
+A static personal site with a three.js globe, an ordered Bayer / halftone post-process, selectable geographic locations, and an accessible profile index. The page contains only the atlas panel and entry tabs. The GitHub README contains only a linked VECTUS preview, since GitHub does not run WebGL inside READMEs. The atlas remains available at the site root.
 
 ## Build and preview
 
@@ -16,7 +16,7 @@ Open http://127.0.0.1:8765/docs/. GitHub Pages publishes the committed `docs/` d
 - `content/locations.mjs`: seven places: Sydney, Dubai, Los Angeles, Ithaca, New Zealand, India, and Amsterdam. New Zealand and India use explicitly labeled country-level pins until cities are specified. Experiences without a confirmed location have no map pin.
 - `src/atlas.mjs`: three.js scene, orbital controls, post-processing, bounded canvas allocations, rendering lifecycle, and resource cleanup.
 - `src/app.mjs`: profile selection, renderer controls, deep links, and fallback behavior.
-- `scripts/build.mjs`: generates the README, HTML, geographic SVG texture, static previews, and browser bundle. The README panel screenshot is captured from the rendered page.
+- `scripts/build.mjs`: generates the README, HTML, geographic SVG texture, static previews, and browser bundle. The README preview is captured from the standalone VECTUS page.
 - `docs/style.css`: presentation.
 
 Run the build after changing source or content; commit generated assets along with source changes. Do not edit generated `docs/atlas.js`, `docs/index.html`, SVGs, or `README.md` directly. After changing visible content or layout, open the local page at a 1440 × 1100 viewport, wait for the globe and fonts to load, and capture the `#atlas-preview` element to `docs/atlas-preview.png`. The default view is the Projects entry; capture only the panel and tabs.
@@ -36,3 +36,13 @@ The dither approach is adapted from the Canvas UI `DitheredObject` source suppli
 Geographic outlines: Natural Earth 1:110m land, public domain. See `content/geography/README.md`. Barlow Condensed is distributed under the SIL Open Font License in `docs/fonts/OFL.txt`. Three.js license notices are preserved in `docs/atlas.js.LEGAL.txt`.
 
 The design takes visual cues from industrial and Anduril-style interfaces; it is a personal portfolio and has no affiliation with Anduril.
+
+## VECTUS exploded view
+
+Open http://127.0.0.1:8765/docs/vectus/ locally or https://vikramwish.github.io/vikramwish/vectus/ on Pages. The original Claude Design export is integrated directly into `docs/vectus/`; it needs no build step. Edit `assets/vectus-engine.js` for geometry and rendering, `assets/app.js` for controls, and `assets/style.css` for presentation. The thirteen parts are illustrative concept art.
+
+Capture `docs/vectus/preview.png` from `?poster` at 840 × 472 CSS pixels and device scale 2, after `document.fonts.ready` and `html[data-ready="1"]`. This produces a 1680 × 944 README image. Run `npm run build` to regenerate the single linked image in README.
+
+Check all thirteen callout selections, separation, assemble/explode, dither/clean, drag and keyboard orbit, zoom/reset, mobile layouts, reduced motion, and static fallback before publishing.
+
+Design and procedural model: Claude Design export supplied by the profile owner. Three.js MIT license is in `docs/vectus/assets/vendor/LICENSE-three.txt`. Archivo and IBM Plex Mono are self-hosted with their SIL Open Font Licenses in `docs/vectus/assets/fonts/`.

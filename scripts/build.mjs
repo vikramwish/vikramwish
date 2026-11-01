@@ -43,7 +43,7 @@ const html=`<!doctype html>
 </main>
 </body></html>`;
 await writeFile(new URL('docs/index.html',root),html);
-const readme=`<a href="https://vikramwish.github.io/vikramwish/"><img src="docs/atlas-preview.png" width="100%" alt="Vikram’s interactive Orbital Atlas. Rotate the dithered globe and explore Sydney, Dubai, Los Angeles, Ithaca, New Zealand, India, and Amsterdam. Click to open the live atlas."></a>\n`;
+const readme=`<a href="https://vikramwish.github.io/vikramwish/vectus/"><img src="docs/vectus/preview.png" width="100%" alt="VECTUS — interactive exploded aircraft concept. Click to rotate the model, separate its thirteen components, and inspect each part."></a>\n`;
 await writeFile(new URL('README.md',root),readme);
 await build({entryPoints:[new URL('src/app.mjs',root).pathname],outfile:new URL('docs/atlas.js',root).pathname,bundle:true,minify:true,format:'esm',target:['es2022'],legalComments:'linked'});
-console.log('Built atlas, geographic assets, and README.');
+console.log('Built atlas and README; standalone Vectus viewer retained.');

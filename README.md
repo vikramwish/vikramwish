@@ -1,1 +1,1 @@
-<a href="https://vikramwish.github.io/vikramwish/"><img src="docs/atlas-preview.png" width="100%" alt="Vikram’s interactive Orbital Atlas. Rotate the dithered globe and explore Sydney, Dubai, Los Angeles, Ithaca, New Zealand, India, and Amsterdam. Click to open the live atlas."></a>
+<a href="https://vikramwish.github.io/vikramwish/vectus/"><img src="docs/vectus/preview.png" width="100%" alt="VECTUS — interactive exploded aircraft concept. Click to rotate the model, separate its thirteen components, and inspect each part."></a>
