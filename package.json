@@ -1,0 +1,8 @@
+{
+  "name": "vikram-orbital-atlas",
+  "private": true,
+  "type": "module",
+  "scripts": { "build": "node scripts/build.mjs" },
+  "dependencies": { "three": "0.187.0" },
+  "devDependencies": { "esbuild": "0.28.2" }
+}

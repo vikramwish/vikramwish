@@ -1,29 +1,38 @@
-# Maintaining the Tree of Paths
+# Orbital Atlas
 
-The GitHub profile README and static GitHub Pages site share their biography in `content/chapters.mjs`. Edit that file, then run:
+A static personal site with a three.js globe, an ordered Bayer / halftone post-process, selectable geographic locations, and an accessible profile index. The page contains only the atlas panel and entry tabs. The GitHub README contains one linked screenshot of that same panel, since GitHub does not run WebGL inside READMEs.
 
-```sh
-node scripts/build.mjs
-```
-
-Commit the generated `README.md` and `docs/index.html` alongside the content change. No third-party dependencies are required. GitHub Pages publishes `main /docs`.
-
-## Preview
+## Build and preview
 
 ```sh
+npm ci
+npm run build
 python3 -m http.server 8765 --bind 127.0.0.1
 ```
 
-Open http://127.0.0.1:8765/docs/.
+Open http://127.0.0.1:8765/docs/. GitHub Pages publishes the committed `docs/` directory from `main`. No runtime CDN or third-party service is required.
 
-## Behavior
+- `content/chapters.mjs`: public biography and project descriptions.
+- `content/locations.mjs`: seven places: Sydney, Dubai, Los Angeles, Ithaca, New Zealand, India, and Amsterdam. New Zealand and India use explicitly labeled country-level pins until cities are specified. Experiences without a confirmed location have no map pin.
+- `src/atlas.mjs`: three.js scene, orbital controls, post-processing, bounded canvas allocations, rendering lifecycle, and resource cleanup.
+- `src/app.mjs`: profile selection, renderer controls, deep links, and fallback behavior.
+- `scripts/build.mjs`: generates the README, HTML, geographic SVG texture, static previews, and browser bundle. The README panel screenshot is captured from the rendered page.
+- `docs/style.css`: presentation.
 
-Each memory is a native link to a readable chronicle entry. With JavaScript, it opens a native modal dialog, lights its path, and marks the memory visited for this visit. Next/previous controls follow the chapter sequence. Escape and the close button return focus to the opener. Deep links open the matching memory; former garden links remain supported. There is no stored visitor data.
+Run the build after changing source or content; commit generated assets along with source changes. Do not edit generated `docs/atlas.js`, `docs/index.html`, SVGs, or `README.md` directly. After changing visible content or layout, open the local page at a 1440 × 1100 viewport, wait for the globe and fonts to load, and capture the `#atlas-preview` element to `docs/atlas-preview.png`. The default view is the Projects entry; capture only the panel and tabs.
 
-Reduced-motion preferences suppress animation. The Stillness control pauses the atmospheric lights. Without JavaScript, the tree artwork and all nine native chronicle disclosures remain available.
+## Interaction and accessibility
 
-Before publishing, verify all memories, next/previous boundaries, escape/backdrop close, focus restoration, deep links, no-JavaScript links, reduced motion, mobile layout, and the artwork download. Confirm the GitHub-rendered README preserves all disclosures.
+Drag to orbit or focus the canvas and use arrow keys. Select a city from the projected pins or the permanent location list. Profile entries also work without a mapped location. Bayer, halftone, and clean modes, grain adjustment, spin, and reset controls change the view.
 
-## Artwork provenance
+Motion is user-triggered; reduced-motion preferences disable spin and make location transitions immediate. Rendering pauses when the canvas leaves the viewport. Native anchor links switch the selected panel through CSS target states, and a geographic SVG fallback remains readable with JavaScript disabled. WebGL failure or context loss returns to the static globe while preserving profile navigation.
 
-`docs/tree-of-paths.png` is an original illustration generated with the built-in image generation tool. The exact prompt is in `content/art-prompt.txt`. Inspiration: the Tree of Life and the atmosphere of Attack on Titan; all biographical chapters are Vikram's own. Facts come from the original public profile README and public GitHub repository descriptions, not inferred private history.
+Check rendering, mouse and keyboard rotation, all locations, all twelve entries, rendering controls, motion preferences, deep links, mobile overflow, no-JavaScript navigation, and WebGL failure before publishing. Verify the live Pages site and GitHub-rendered README after deployment.
+
+## Sources and attribution
+
+The dither approach is adapted from the Canvas UI `DitheredObject` source supplied by the user. This implementation uses the existing static architecture and three.js directly rather than adding React and a generic asset loader. It implements Bayer, halftone, and clean rendering; Floyd–Steinberg diffusion and arbitrary uploaded models are outside this site's scope.
+
+Geographic outlines: Natural Earth 1:110m land, public domain. See `content/geography/README.md`. Barlow Condensed is distributed under the SIL Open Font License in `docs/fonts/OFL.txt`. Three.js license notices are preserved in `docs/atlas.js.LEGAL.txt`.
+
+The design takes visual cues from industrial and Anduril-style interfaces; it is a personal portfolio and has no affiliation with Anduril.
