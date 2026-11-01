@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#eef3f7">
+  <meta name="description" content="An interactive signal garden by Vikram. Explore software, teaching, research and a life across places.">
+  <title>Vikram — Signal garden</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 50 50'%3E%3Crect width='50' height='50' rx='25' fill='%23eef3f7'/%3E%3Cpath d='M12 12L25 39L38 12M25 39V7' fill='none' stroke='%23184fc6' stroke-width='2'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="style.css">
+  <script type="module" src="app.mjs"></script>
+</head>
+<body>
+  <a class="skip" href="#stories">Skip to my story</a>
+  <header>
+    <a class="signature" href="https://github.com/vikramwish" aria-label="Vikram on GitHub">vikram<span aria-hidden="true">✳</span></a>
+    <p>Software engineering & a little curiosity.<br>Sydney, Australia</p>
+    <a class="profile-link" href="https://github.com/vikramwish">Back to GitHub <span aria-hidden="true">↗</span></a>
+  </header>
+  <main>
+    <section class="intro" aria-labelledby="title">
+      <h1 id="title">Everything starts<br>with a little <em>curiosity.</em></h1>
+      <div class="intro-note"><p>A living sketch of the things I do.<br>Follow a thread. See where it grows.</p><span class="handwritten" aria-hidden="true">make yourself at home ↘</span></div>
+    </section>
+    <div class="exhibit">
+      <section class="garden" aria-label="Interactive signal garden">
+        <div class="drawing">
+          <svg id="art" viewBox="0 0 900 700" role="img" aria-labelledby="art-title art-desc"><title id="art-title">Signal garden</title><desc id="art-desc">Four flowers woven from fine colored threads share a common root. Explore the labeled branches to read Vikram's story.</desc><g id="threads"></g></svg>
+          <div class="branch-controls" role="group" aria-label="Explore a branch" hidden>
+            <button class="branch build" data-branch="build" aria-controls="build" aria-expanded="false"><span>Build</span><span aria-hidden="true">+</span></button>
+            <button class="branch teach" data-branch="teach" aria-controls="teach" aria-expanded="false"><span>Teach</span><span aria-hidden="true">+</span></button>
+            <button class="branch research" data-branch="research" aria-controls="research" aria-expanded="false"><span>Research</span><span aria-hidden="true">+</span></button>
+            <button class="branch wander" data-branch="wander" aria-controls="wander" aria-expanded="false"><span>Wander</span><span aria-hidden="true">+</span></button>
+          </div>
+          <noscript><img class="fallback" src="garden.svg" alt="Four intricate flowers drawn with blue, rust, green and violet threads."></noscript>
+        </div>
+        <div class="art-tools" hidden>
+          <p>Move to bend the threads.<br><span>Or tap a name to explore.</span></p>
+          <div><button id="regrow" type="button">Regrow <span aria-hidden="true">↻</span></button><button id="save" type="button">Keep this drawing <span aria-hidden="true">↓</span></button></div>
+        </div>
+        <p id="art-status" class="sr-only" role="status"></p>
+      </section>
+      <aside id="stories" tabindex="-1" aria-label="Vikram's story">
+        <article id="welcome" class="welcome">
+          <span class="specimen" aria-hidden="true">✳</span>
+          <h2>Hello, I'm Vikram.</h2>
+          <p>I build reliable software, teach Python, and follow interesting questions.</p>
+          <p>I'm a final-year Software Engineering (Honours) student at the University of Sydney, graduating in 2027 and looking for a graduate software engineering role starting in February.</p>
+          <p class="invitation">Every branch has a story.<br>Pick one to unfold it.</p>
+        </article>
+        <article id="build" class="story">
+          <span class="story-mark" aria-hidden="true">⌘</span><h2>Make it work.<br>Make it reliable.</h2>
+          <p>At <strong>Cogniti</strong>, I wrote a 70+ case Selenium end-to-end suite that helped cut release time in half: six weeks to three.</p>
+          <p>I also supported an AWS Lambda to Azure migration for a platform serving 70,000+ students across 22 institutions.</p>
+          <dl><dt>Summer 2025</dt><dd>Software Engineer · Cogniti</dd><dt>2022–2023</dt><dd>Software Engineering Intern · Zoho, Dubai</dd></dl>
+          <p class="small">Python, HTML, CSS, Bash, Selenium, Playwright, GitHub Actions, Docker, Azure, Cosmos DB, AWS Lambda, REST APIs and MCP.</p>
+          <a href="https://github.com/vikramwish?tab=repositories">Explore my repositories <span aria-hidden="true">↗</span></a>
+        </article>
+        <article id="teach" class="story">
+          <span class="story-mark" aria-hidden="true">✺</span><h2>Understanding grows<br>when you share it.</h2>
+          <p>I'm a <strong>Casual Academic & Head TA</strong> at the University of Sydney.</p>
+          <p>I teach Python labs and tutorials for ENGG1810, with a first-year cohort of <strong>1,300+ engineers</strong>.</p>
+          <dl><dt>2026–present</dt><dd>University of Sydney</dd></dl>
+        </article>
+        <article id="research" class="story">
+          <span class="story-mark" aria-hidden="true">❋</span><h2>Follow the question.</h2>
+          <p>From sensor arrays to degree structures, I've worked on questions at very different scales.</p>
+          <dl><dt>2025 · Cornell University</dt><dd>Research Assistant. Benchmarked degree structures across 15+ peer institutions.</dd><dt>2023–2024 · University of Sydney</dt><dd>Research Engineer. Contributor to a peer-reviewed publication on chem-resistive gas sensor arrays.</dd></dl>
+        </article>
+        <article id="wander" class="story">
+          <span class="story-mark" aria-hidden="true">✧</span><h2>A few places.<br>Many perspectives.</h2>
+          <p>I've studied or worked in Australia, the USA, India, the Netherlands and the UAE. I'm a New Zealand citizen, currently in Sydney.</p>
+          <dl><dt>University of Sydney</dt><dd>Bachelor of Software Engineering (Honours), graduating 2027.</dd><dt>Cornell · exchange, 2025</dt><dd>Software Systems Engineering (A+), Building LLM Applications (A+).</dd><dt>UCLA · summer exchange, 2024</dt><dd>A third university, another way of seeing things.</dd></dl>
+        </article>
+        <button id="reset" type="button" hidden>Return to the whole garden</button>
+      </aside>
+    </div>
+  </main>
+  <footer><p>Signal garden <span>— a small, growing self-portrait.</span></p><nav aria-label="Find Vikram"><a href="https://www.linkedin.com/in/vikram-vish/">Let's connect ↗</a><a href="https://github.com/vikramwish/vikramwish">View source ↗</a></nav></footer>
+</body>
+</html>
