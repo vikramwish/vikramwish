@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Explore Vikram Viswanath's projects through an interactive portfolio terminal. Browser simulation, not a real shell.">
+<title>vikramwish — terminal</title>
+<style>
+:root{color-scheme:dark;--desktop:#202124;--bg:#181818;--surface:#303030;--text:#ededed;--muted:#b5b5b5;--line:#454545;--accent:#a4d6ac}
+:root[data-theme="light"]{color-scheme:light;--desktop:#e7e7e9;--bg:#fff;--surface:#ececec;--text:#202020;--muted:#626262;--line:#c7c7c7;--accent:#27643a}
+*{box-sizing:border-box}[hidden]{display:none!important}
+body{margin:0;padding:32px;min-height:100dvh;background:var(--desktop);color:var(--text);font:14px/1.65 Menlo,"SFMono-Regular",Consolas,monospace;display:grid;place-items:center}
+main{width:min(100%,1060px);height:min(640px,calc(100dvh - 64px));min-height:300px;display:flex;flex-direction:column;background:var(--bg);border:1px solid var(--line);border-radius:11px;overflow:hidden;box-shadow:0 24px 70px #0005,0 2px 8px #0003}
+.titlebar{height:44px;flex:none;display:grid;grid-template-columns:96px 1fr 96px;align-items:center;padding:0 12px;background:var(--surface);border-bottom:1px solid var(--line);box-shadow:inset 0 1px #ffffff0c;font:13px/1 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;user-select:none}
+.titlebar strong{text-align:center;font-weight:500;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.traffic-lights{display:flex;align-items:center;gap:8px}.traffic{position:relative;width:12px;height:12px;min-height:0;padding:0;border:1px solid #0002;border-radius:50%;color:#0009;display:grid;place-items:center;font:12px/10px -apple-system,sans-serif;cursor:default}.traffic:before{content:"";position:absolute;inset:-4px}.traffic span{opacity:0}.traffic-lights:hover span,.traffic:focus-visible span{opacity:1}.traffic:active{filter:brightness(.75)}.close{background:#ff5f57}.minimize{background:#febc2e}.zoom{background:#28c840}
+#session{padding:22px 24px;flex:1;min-width:0;min-height:0;overflow:auto;scrollbar-color:var(--line) transparent}
+#output{white-space:pre-wrap;overflow-wrap:anywhere}#output p{margin:0 0 14px}.accent{color:var(--accent)}.muted{color:var(--muted)}a{color:var(--accent);text-underline-offset:4px}
+form{display:flex;align-items:center;gap:10px;min-width:0;margin-top:10px}#prompt{white-space:nowrap;color:var(--accent)}input{min-width:0;flex:1;width:100%;font:inherit;color:var(--text);background:transparent;border:0;border-radius:0;padding:8px 0;caret-color:var(--text)}input:focus{outline:0}form:focus-within{box-shadow:0 1px var(--line)}
+button{font:12px -apple-system,BlinkMacSystemFont,sans-serif;color:var(--text);background:var(--surface);border:1px solid var(--line);border-radius:5px;padding:6px 10px;cursor:pointer}button:active{filter:brightness(.85)}form button{min-height:32px}#restore{grid-column:3;font-size:10px;padding:5px 3px}:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+footer{padding:8px 16px;border-top:1px solid var(--line);font:11px/1.5 -apple-system,BlinkMacSystemFont,sans-serif;color:var(--muted);display:flex;gap:12px;justify-content:space-between;flex-wrap:wrap;background:var(--surface)}.intro{font-size:14px;font-weight:700}noscript{padding:24px}
+main[data-collapsed="true"]{height:46px;min-height:0}main[data-collapsed="true"] #session,main[data-collapsed="true"] footer{display:none}main[data-zoomed="true"]{width:100%;height:calc(100dvh - 64px)}
+@media(max-width:600px){body{padding:12px;font-size:13px}main{height:calc(100dvh - 24px);min-height:280px;border-radius:10px}main[data-zoomed="true"]{height:calc(100dvh - 24px)}#session{padding:18px 16px}.titlebar{grid-template-columns:80px 1fr 80px;padding:0 10px;font-size:12px}.traffic-lights{gap:10px}footer .keys{display:none}form{gap:8px}form button{min-height:44px}.traffic:before{inset:-8px}}
+@media(prefers-contrast:more){main{border-color:var(--text)}.titlebar strong,footer{color:var(--text)}}
+</style>
+</head>
+<body>
+<main aria-label="Interactive portfolio terminal">
+<header class="titlebar">
+<div class="traffic-lights" aria-label="Window controls">
+<button class="traffic close" aria-label="Close terminal" title="Close terminal"><span aria-hidden="true">×</span></button>
+<button class="traffic minimize" aria-label="Minimize terminal" title="Minimize terminal"><span aria-hidden="true">−</span></button>
+<button class="traffic zoom" aria-label="Zoom terminal" title="Zoom terminal"><span aria-hidden="true">+</span></button>
+</div>
+<strong>vikramwish — portfolio</strong>
+<button id="restore" hidden>Reopen terminal</button>
+</header>
+<section id="session" aria-label="Terminal session">
+<div id="output" role="log" aria-label="Terminal output" aria-live="polite" aria-relevant="additions"></div>
+<form id="command-form" autocomplete="off"><label id="prompt" for="command">~ $</label><input id="command" aria-label="Terminal command" spellcheck="false" autocapitalize="off" autocomplete="off" maxlength="500"><button type="submit">Run ↵</button></form>
+</section>
+<footer><span id="mode">Browser simulation · no execution</span><span class="keys">↑↓ history · Tab complete · Ctrl+L clear</span></footer>
+<noscript>Enable JavaScript to use this simulated terminal. <a href="https://github.com/vikramwish">Browse Vikram’s repositories instead.</a></noscript>
+</main>
+<script>
+'use strict';
+const output=document.querySelector('#output');
+const input=document.querySelector('#command');
+function print(text,style=''){const p=document.createElement('p');p.className=style;p.textContent=text;output.append(p);}
+print('Vikram Viswanath','intro');
+print('Software engineering · AI systems · Native applications','muted');
+print('Welcome to my portfolio. Type help to explore.','accent');
+const commands=['help','about','projects','experience','contact','ls','cat','pwd','whoami','echo','date','history','theme','clear','claude','codex','exit'];
+const about='Vikram Viswanath\nSoftware Engineering (Honours), University of Sydney.\nCornell exchange. Graduating June 2027.\nI build AI systems, native applications, and practical developer tools.';
+const experience='Cogniti — Software Engineer\n70+ case regression suite; halved release time; AWS to Azure migration.\n\nUniversity of Sydney — Research Engineer / Head TA\nSensor research, Python tooling, and engineering education.\n\nZoho — Software Engineering Intern, Dubai';
+const projects=[
+ ['Zeus','Rust runtime for concurrent coding agents.','https://github.com/vikramwish/zeus'],
+ ['OpenFiles','Native macOS file browser with on-device semantic search.','https://github.com/vikramwish/openfiles-mac'],
+ ['Tally','Local-first workout tracking with React Native.','https://github.com/vikramwish/tally']
+];
+const files={
+ 'about.txt':about,
+ 'projects.txt':projects.map(([name,desc,url])=>name+' — '+desc+'\n'+url).join('\n\n'),
+ 'experience.txt':experience,
+ 'contact.txt':'LinkedIn: https://www.linkedin.com/in/vikram-vish/\nGitHub: https://github.com/vikramwish'
+};
+const history=[];let index=0,draft='',assistant='';
+function link(label,url,description=''){
+ const p=document.createElement('p'),a=document.createElement('a');
+ a.textContent=label;a.href=url;a.target='_blank';a.rel='noopener noreferrer';p.append(a);
+ if(description)p.append(document.createTextNode('\n'+description));output.append(p);
+}
+function showProjects(){projects.forEach(([name,desc,url])=>link(name,url,desc));}
+function contact(){link('LinkedIn','https://www.linkedin.com/in/vikram-vish/');link('GitHub','https://github.com/vikramwish');}
+function setMode(name){assistant=name;document.querySelector('#prompt').textContent=name?name+' >':'~ $';document.querySelector('#mode').textContent=name?name+' · simulated / scripted':'Browser simulation · no execution';}
+function help(){print('about         Bio & education\nprojects      Repositories you can open\nexperience    Engineering, research & teaching\ncontact       LinkedIn & GitHub\n\nls / cat      Explore virtual portfolio files\npwd / whoami  Virtual location / identity\necho / date   Print text / your local time\nhistory       Commands from this session\ntheme         dark | light\nclear         Clear the screen\n\nclaude        Simulated Claude Code mode\ncodex         Simulated Codex mode\nexit          Leave an assistant mode\n\n↑↓ history · Tab completion · Ctrl+L clear · Ctrl+C exit','muted');}
+function answer(text){
+ const q=text.toLowerCase();
+ if(q==='/exit'||q==='exit'){setMode('');print('Back to the portfolio shell.','muted');return;}
+ if(q==='help'||q==='/help'){print('Scripted assistant: ask about projects, experience, bio, or contact.\nUse /exit to return. No model is connected.','muted');return;}
+ if(/\b(projects?|repos?|built|building)\b/.test(q)){showProjects();return;}
+ if(/\b(experience|work|career|skills)\b/.test(q)){print(experience);return;}
+ if(/\b(contact|linkedin|email)\b/.test(q)){contact();return;}
+ if(/\b(about|bio|education|introduce|who)\b/.test(q)){print(about);return;}
+ print('This is a scripted portfolio demo, not a connected AI.\nTry “show projects”, “about Vikram”, “experience”, or “contact”.','muted');
+}
+function run(raw){
+ print((assistant?assistant+' > ':'~ $ ')+raw,'accent');
+ history.push(raw);if(history.length>100)history.shift();index=history.length;draft='';
+ if(assistant){answer(raw);return;}
+ const [cmd,...args]=raw.split(/\s+/);const rest=args.join(' ');
+ switch(cmd.toLowerCase()){
+  case 'help':help();break;
+  case 'about':print(about);break;
+  case 'projects':showProjects();break;
+  case 'experience':print(experience);break;
+  case 'contact':contact();break;
+  case 'ls':print(Object.keys(files).join('\n'));break;
+  case 'cat':print(Object.hasOwn(files,rest)?files[rest]:'File not found. Try: cat about.txt');break;
+  case 'pwd':print('/home/visitor/portfolio (virtual)');break;
+  case 'whoami':print('visitor — exploring Vikram’s portfolio');break;
+  case 'echo':print(raw.replace(/^echo\s*/i,''));break;
+  case 'date':print(new Date().toString());break;
+  case 'history':print(history.map((x,i)=>`${i+1}  ${x}`).join('\n'));break;
+  case 'theme':if(['dark','light'].includes(rest)){document.documentElement.dataset.theme=rest;print('Theme: '+rest);}else print('Usage: theme dark | theme light');break;
+  case 'clear':output.replaceChildren();break;
+  case 'claude':case 'codex':setMode(cmd.toLowerCase());print('Simulated '+(cmd.toLowerCase()==='claude'?'Claude Code':'Codex')+' session.\nScripted portfolio answers only; no API or account connection.\nAsk about projects, experience, bio, or contact. /exit returns.','muted');if(rest)answer(rest);break;
+  case 'exit':print('Already in the portfolio shell. You can close this tab.','muted');break;
+  default:print('Command not supported in this simulation. Type help.','muted');
+ }
+}
+const shell=document.querySelector('main'),session=document.querySelector('#session');
+const restore=document.querySelector('#restore'),minimize=document.querySelector('.minimize'),zoom=document.querySelector('.zoom');
+function collapse(closed){shell.dataset.collapsed='true';shell.dataset.zoomed='false';zoom.setAttribute('aria-label','Zoom terminal');restore.hidden=false;restore.textContent=closed?'Reopen terminal':'Restore terminal';minimize.setAttribute('aria-label','Unminimize terminal');restore.focus();}
+function reopen(){shell.dataset.collapsed='false';restore.hidden=true;minimize.setAttribute('aria-label','Minimize terminal');input.focus();}
+document.querySelector('.close').addEventListener('click',()=>{setMode('');input.value='';collapse(true);});
+minimize.addEventListener('click',()=>shell.dataset.collapsed==='true'?reopen():collapse(false));
+restore.addEventListener('click',reopen);
+zoom.addEventListener('click',()=>{if(shell.dataset.collapsed==='true')reopen();const expanded=shell.dataset.zoomed!=='true';shell.dataset.zoomed=String(expanded);zoom.setAttribute('aria-label',expanded?'Restore window size':'Zoom terminal');});
+function finish(){while(output.children.length>120)output.firstElementChild.remove();input.focus({preventScroll:true});session.scrollTop=session.scrollHeight;}
+document.querySelector('#command-form').addEventListener('submit',e=>{e.preventDefault();const raw=input.value.trim();input.value='';if(raw)run(raw);finish();});
+input.addEventListener('keydown',e=>{
+ if(e.isComposing)return;
+ if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='l'){e.preventDefault();output.replaceChildren();return;}
+ if(e.ctrlKey&&e.key.toLowerCase()==='c'){e.preventDefault();input.value='';print('^C','muted');setMode('');finish();return;}
+ if(e.key==='ArrowUp'||e.key==='ArrowDown'){
+  e.preventDefault();if(index===history.length)draft=input.value;
+  index=Math.max(0,Math.min(history.length,index+(e.key==='ArrowUp'?-1:1)));
+  input.value=index===history.length?draft:history[index];return;
+ }
+ if(e.key==='Tab'&&input.value&&!e.shiftKey&&!assistant){
+  const raw=input.value;const choices=raw.startsWith('cat ')?Object.keys(files).map(x=>'cat '+x):commands;
+  const matches=choices.filter(x=>x.startsWith(raw));
+  if(matches.length===1){e.preventDefault();input.value=matches[0];}
+  else if(matches.length>1){e.preventDefault();print(matches.join('  '),'muted');}
+ }
+});
+print('Try: projects · about · claude · codex','muted');
+</script>
+</body></html>

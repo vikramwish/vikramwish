@@ -1,0 +1,61 @@
+import assert from 'node:assert/strict';
+import { existsSync } from 'node:fs';
+import { createRequire } from 'node:module';
+const require=createRequire(import.meta.url);
+const {chromium}=require('playwright');
+const target=new URL('../docs/terminal/index.html',import.meta.url);
+assert.ok(existsSync(target),'Interactive terminal page must exist');
+const browser=await chromium.launch({headless:true});
+try {
+ const page=await browser.newPage({viewport:{width:1100,height:800}});
+ const errors=[];page.on('pageerror',e=>errors.push(e.message));
+ await page.goto(target.href);
+ const input=page.getByRole('textbox',{name:'Terminal command'});
+ async function run(cmd){await input.fill(cmd);await input.press('Enter');}
+ await run('help');
+ assert.match(await page.locator('#output').innerText(),/projects/);
+ assert.match(await page.locator('#output').innerText(),/claude/);
+ assert.equal(await input.inputValue(),'');
+ await run('projects');
+ assert.equal(await page.locator('#output a[href="https://github.com/vikramwish/zeus"]').count(),1);
+ await run('about');assert.match(await page.locator('#output').innerText(),/Cornell/);
+ await run('contact');assert.equal(await page.locator('#output a[href="https://www.linkedin.com/in/vikram-vish/"]').count(),1);
+ await run('ls');assert.match(await page.locator('#output').innerText(),/about.txt/);
+ await run('cat about.txt');assert.match(await page.locator('#output p').last().innerText(),/Sydney/);
+ await run('cat missing');assert.match(await page.locator('#output p').last().innerText(),/not found/);
+ await run('claude');assert.match(await page.locator('#mode').innerText(),/claude.*simulated/);
+ await run('tell me about projects');assert.match(await page.locator('#output').innerText(),/OpenFiles/);
+ await run('what is the weather');assert.match(await page.locator('#output p').last().innerText(),/scripted/);
+ await run('/exit');assert.match(await page.locator('#mode').innerText(),/Browser simulation/);
+ await run('codex');assert.match(await page.locator('#mode').innerText(),/codex.*simulated/);
+ await run('about');assert.match(await page.locator('#output p').last().innerText(),/Cornell/);
+ await input.press('Control+c');assert.match(await page.locator('#mode').innerText(),/Browser simulation/);
+ await run('theme light');assert.equal(await page.locator('html').getAttribute('data-theme'),'light');
+ await run('theme dark');assert.equal(await page.locator('html').getAttribute('data-theme'),'dark');
+ await input.press('ArrowUp');assert.equal(await input.inputValue(),'theme dark');
+ await input.press('ArrowDown');assert.equal(await input.inputValue(),'');
+ await input.fill('pro');await input.press('Tab');assert.equal(await input.inputValue(),'projects');
+ await run('echo <img src=x onerror=alert(1)>');assert.equal(await page.locator('#output img').count(),0);
+ await run('rm -rf /');assert.match(await page.locator('#output p').last().innerText(),/not supported/);
+ await run('clear');assert.equal(await page.locator('#output').innerText(),'');
+ await run('help');await input.press('Control+l');assert.equal(await page.locator('#output').innerText(),'');
+ for(const width of [390,1100]){
+  await page.setViewportSize({width,height:800});await run('projects');
+  assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
+ }
+ await page.getByRole('button',{name:'Minimize terminal',exact:true}).click();
+ assert.equal(await input.isVisible(),false);
+ await page.getByRole('button',{name:'Restore terminal',exact:true}).click();
+ assert.equal(await input.isVisible(),true);
+ await page.getByRole('button',{name:'Zoom terminal',exact:true}).click();
+ assert.equal(await page.locator('main').getAttribute('data-zoomed'),'true');
+ await page.getByRole('button',{name:'Restore window size',exact:true}).click();
+ await page.getByRole('button',{name:'Close terminal',exact:true}).click();
+ assert.equal(await input.isVisible(),false);
+ await page.getByRole('button',{name:'Reopen terminal',exact:true}).click();
+ assert.equal(await input.isVisible(),true);
+ await run('projects');assert.match(await page.locator('#output').innerText(),/Zeus/);
+ assert.deepEqual(errors,[]);
+ console.log('PASS: portfolio commands, virtual files, assistant modes, history, completion, themes, injection safety, mobile layout');
+ console.log('PASS: interactive command input and help');
+} finally {await browser.close();}

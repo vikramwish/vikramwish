@@ -1,0 +1,1 @@
+<a href="https://vikramwish.github.io/vikramwish/terminal/" aria-label="Open the interactive portfolio terminal"><img src="docs/terminal/preview.png" width="100%" alt="Vikram's portfolio terminal. Click to open the interactive version: explore projects, read virtual files, and try scripted Claude Code or Codex modes. Browser simulation only; no real commands or AI calls."></a>

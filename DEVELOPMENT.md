@@ -1,6 +1,6 @@
 # Profile viewers
 
-A static personal site with a three.js globe, an ordered Bayer / halftone post-process, selectable geographic locations, and an accessible profile index. The page contains only the atlas panel and entry tabs. The GitHub README contains only a linked VECTUS preview, since GitHub does not run WebGL inside READMEs. The atlas remains available at the site root.
+A static personal site with a three.js globe, an ordered Bayer / halftone post-process, selectable geographic locations, and an accessible profile index. The page contains only the atlas panel and entry tabs. The GitHub README contains only a terminal preview linked to the interactive browser simulation at `docs/terminal/`. Edit `content/profile.md` and run the build to update the README. The terminal is a self-contained static HTML page: no backend, real command execution, model calls, or credential handling. The original atlas and VECTUS pages remain available. The atlas remains available at the site root.
 
 ## Build and preview
 
@@ -41,7 +41,13 @@ The design takes visual cues from industrial and Anduril-style interfaces; it is
 
 Open http://127.0.0.1:8765/docs/vectus/ locally or https://vikramwish.github.io/vikramwish/vectus/ on Pages. The original Claude Design export is integrated directly into `docs/vectus/`; it needs no build step. Edit `assets/vectus-engine.js` for geometry and rendering, `assets/app.js` for controls, and `assets/style.css` for presentation. The thirteen parts are illustrative concept art.
 
-Capture `docs/vectus/preview.png` from `?poster` at 840 × 472 CSS pixels and device scale 2, after `document.fonts.ready` and `html[data-ready="1"]`. This produces a 1680 × 944 README image. Run `npm run build` to regenerate the single linked image in README.
+Capture `docs/vectus/preview.png` from `?poster` at 840 × 472 CSS pixels and device scale 2, after `document.fonts.ready` and `html[data-ready="1"]`. This produces a 1680 × 944 README image. The VECTUS preview is independent of the profile README.
+
+## Interactive terminal
+
+`docs/terminal/index.html` is the complete app, openable directly or through GitHub Pages. Supported commands are listed by `help`. Virtual files and scripted Claude Code/Codex modes are portfolio navigation, not real shell or model sessions. History is bounded and kept in memory only. User input is rendered with text nodes; outbound links are hard-coded public profile/project URLs.
+
+With Playwright available in Node's resolution path, run `node scripts/test-terminal.mjs` for browser interaction checks and `node scripts/capture-terminal.mjs` to refresh `docs/terminal/preview.png` and review screenshots. Run `npm run build` to regenerate the README from `content/profile.md`. Commit the terminal HTML, preview, and generated README together.
 
 Check all thirteen callout selections, separation, assemble/explode, dither/clean, drag and keyboard orbit, zoom/reset, mobile layouts, reduced motion, and static fallback before publishing.
 
